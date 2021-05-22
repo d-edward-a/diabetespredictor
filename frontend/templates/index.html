@@ -1,0 +1,1991 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block main_content %}
+<div class="container" style="margin-top: 15px">
+    <div class="row">
+        <div class="col-9 logo">
+            <a href="/index"><img class="logosize" alt="diabetes logo" src="{% static 'images/heart_diabetes.png' %}"></a>
+        </div>
+        <div class="col-3 text-right align-self-center">
+            {% block user_info %}
+            {% if user.is_authenticated %}
+            <div class="btn-group">
+                <button type="button" class="btn btn-outline-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Account
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a href="{% url 'profile' %}" class="text-decoration-none h5">
+                        <button class="dropdown-item" type="button">Profile</button>
+                    </a>
+                    <a href="/account/two_factor/" class="text-decoration-none h5">
+                        <button class="dropdown-item" type="button">Security</button>
+                    </a>
+                    {% if user.is_superuser %}
+                    <a href="sendNewsletter" class="text-decoration-none h5">
+                        <button class="dropdown-item" type="button">Newsletter</button>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            &nbsp;
+            <a href="/logout" class="text-decoration-none h5">
+                <button type="button" class="btn btn-outline-danger">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+                        <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+                    </svg> Logout
+                </button>
+            </a>
+            {% else %}
+            <!-- Start Modal -->
+            <div class="modal fade" id="TandCModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="TandCModalLabel">General Terms and Conditions</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row tc_disclaimer">
+                                <p class="txt">
+                               The purpose of this General Terms and Conditions (GTC) is to define
+                               the rules that apply when consulting the diabetespredictor.ch website.
+                               Browsing and using our website implies full and complete acceptance of this GTC.
+                               Therefore, by continuing to browse, the visitor acknowledges that he/she
+                               accepts and adheres to the present GTC. UDP reserves the right to modify the GTC at any time.
+                               Nevertheless, the current version of the GTC is the one online at the time
+                               of consultation and use of the website.
+                                </p>
+                                <span class="txt">
+                                    <h6>Who we are</h6>
+                                        <p class="txt">
+                                            UDP is a university project of the University of Zurich in the framework of the AI: Technology and Law - FS 21 course,
+                                            gathering 5 students from different faculties.
+                                            This project aims to explore the different interactions between artificial intelligence and
+                                            law through this website, and at the same time to bring some educational information
+                                            on the issue of diabetes. You can find more information on the "Our Approach" tab.
+                                        </p>
+                                </span>
+                                <span class="txt">
+                                    <h6>Disclaimer</h6>
+                                        <p class="txt">
+                                            All the Services proposed on UDP constitute an academic work for the UZH,
+                                            in the framework of the interdisciplinary course AI: Technology and Law - FS 21.
+                                            The sole purpose of this work is to illustrate the complementarity of
+                                            law and artificial intelligence through this website.
+                                            We are not doctors and none of the information can be understood as medical advice.
+                                        </p>
+                                        <p class="txt">
+                                            In spite of all the attention paid to the realization of our project,
+                                            the test carried out or the reception of the newsletter does not constitute in any
+                                            case a follow-up or a medical consultation and does not aim at replacing it.
+                                            The test performed does not replace a consultation with a doctor.
+                                            It is strongly recommended to consult a doctor or a professionally competent
+                                            and qualified specialist on the spot, if necessary.
+                                        </p>
+                                        <p class="txt">
+                                            All information provided through this website, such as text, treatment suggestions or
+                                            hypotheses, suggestions, results, charts, graphs, images, advice, communications
+                                            and all other materials provided are for informational and educational purposes
+                                            only and are not a substitute for professional medical advice or treatment.
+                                            Always seek the advice of your doctor or other qualified health care provider
+                                            on any matter relating to your health. Never neglect or delay seeking
+                                            professional medical advice based on information obtained through the service.
+                                        </p>
+                                        <p class="txt">
+                                            If you think you have a medical emergency or need treatment,
+                                            call your doctor or local emergency hospital immediately.
+                                            UDP does not recommend or endorse any specific test, product, procedure, advice, or other
+                                            information that may be mentioned on the website.
+                                        </p>
+                                        <p class="txt">
+                                            Your reliance on information provided
+                                            by UDP or any member of the support team is at your own risk,
+                                            although we always ensure that our services are provided with limited but reasonable
+                                            skill and in accordance with your rights as a user.
+                                        </p>
+                                </span>
+                                <span class="txt">
+                                    <h6>Scope of Application</h6>
+                                        <p class="txt">
+                                            This is a Swiss website intended for individuals
+                                            residing in Switzerland. By entering this website, you agree to be bound
+                                            by the following terms and conditions,
+                                            privacy policy and the Swiss law.
+                                        </p>
+                                        <p class="txt">
+                                            The privacy policy applies only to the website of UDP under the domain "diabetespredictor.ch".
+                                        </p>
+                                </span>
+                                <span class="txt">
+                                    <h6>Use of your Data</h6>
+                                        <p class="txt">
+                                            Data protection is very important to us. Therefore, we strictly observe the legal requirements of the
+                                            Federal Data Protection Act and the Federal Act on Human Research when collecting,
+                                            processing, and using your personal data.
+                                        </p>
+                                        <p class="txt">
+                                            We do not collect, store, nor process any of your data without your prior
+                                            consent and only after informing you in an informed manner about what
+                                            happens to your data (see Privacy Policy).
+                                        </p>
+                                </span>
+                                <span class="txt">
+                                    <h6>Disclosure of Personal Data</h6>
+                                        <p class="txt">
+                                            Under no circumstances will we pass on your personal data to third
+                                            parties without your consent.
+                                        </p>
+                                </span>
+                                <span class="txt">
+                                    <h6>Limitation of Liability</h6>
+                                        <p class="txt">
+                                            Although great care has been taken to ensure the accuracy of the information provided
+                                            on this website, UDP cannot accept any liability for the accuracy, correctness,
+                                            up-to-dateness, reliability, nor the completeness of this information.
+                                        </p>
+                                        <p class="txt">
+                                            UDP expressly reserve the right to modify or delete the content of this website in whole or in part,
+                                            or to temporarily suspend its publication, at any time and without prior notice.
+                                        </p>
+                                        <p class="txt">
+                                            UDP will not be held liable for any material or immaterial damage that may be caused by access to
+                                            or use or non-use of the information provided, by misuse of the connection or by technical problems.
+                                        </p>
+                                        <p class="txt">
+                                            Concerning the links, references, platforms or other services or external websites are not the responsibility of UDP.
+                                            Access to and use of these sites is at the user's own risk.
+                                            UDP expressly declare that they have no influence whatsoever on the design, content and offerings of the linked sites.
+                                            The information and services offered by these sites are entirely the responsibility of their authors.
+                                        </p>
+                                        <p class="txt">
+                                            UDP accept no responsibility for such websites.
+                                        </p>
+                                </span>
+                                <span class="txt">
+                                    <h6>Contact</h6>
+                                    <p class="txt">
+                                        If you have any question concerning our general terms and conditions, our
+                                        privacy policy or any other question, you can contact us at the following
+                                        address: <a href="mailto: diabetespredictor@gmail.com">diabetespredictor@gmail.com</a>
+                                    </p>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" onclick="decline_tandc()" data-dismiss="modal">Decline</button>
+                            <button type="button" class="btn btn-primary" onclick="accept_tandc()" data-dismiss="modal">Accept</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Modal -->
+            <!-- Start Modal -->
+            <div class="modal fade" id="declineGDPRorTandC" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="declineGDPRLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="declineGDPRorTandCLabel">
+                                <span class="glyphicon" style="color: red">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16">
+                                    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                                </svg>
+                                </span>
+                                Attention
+                            </h5>
+                        </div>
+                        <div class="modal-body">
+                            You are not allowed to access this Website.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Modal -->
+            <a href="{% url 'login' %}" title="Login" class="text-decoration-none h5">
+                <button type="button" class="btn btn-outline-info">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-open" viewBox="0 0 16 16">
+                        <path d="M8.5 10c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z"/>
+                        <path d="M10.828.122A.5.5 0 0 1 11 .5V1h.5A1.5 1.5 0 0 1 13 2.5V15h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V1.5a.5.5 0 0 1 .43-.495l7-1a.5.5 0 0 1 .398.117zM11.5 2H11v13h1V2.5a.5.5 0 0 0-.5-.5zM4 1.934V15h6V1.077l-6 .857z"/>
+                    </svg> Login
+                </button>
+            </a>
+            &nbsp;
+            <a href="{% url 'register' %}" title="Register" class="text-decoration-none h5">
+                <button type="button" class="btn btn-info">Register</button>
+            </a>
+            {% endif %}
+            {% endblock %}
+        </div>
+    </div>
+    <div class="row menu" style="margin-top: 25px; margin-bottom: 10px">
+        <ul class="nav nav-tabs col-12" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation" onclick="">
+                <a class="nav-link active" onclick="refresh_assessment_tab()" id="assessment-tab" data-toggle="tab" href="#assessment" role="tab" aria-controls="assessment" aria-selected="true">Assessment</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="approach-tab" data-toggle="tab" href="#approach" role="tab" aria-controls="approach" aria-selected="false">Our Approach</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="privacy-tab" data-toggle="tab" href="#privacy" role="tab" aria-controls="privacy" aria-selected="false">Privacy Policy</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="tc-tab" data-toggle="tab" href="#tc" role="tab" aria-controls="tc" aria-selected="false">General Terms and Conditions</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" onclick="refresh_further_information_tab()" id="DiabetesInformation-tab" data-toggle="tab" href="#DiabetesInformation" role="tab" aria-controls="about" aria-selected="false">Further Information</a>
+            </li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="tab-content" id="indexTabContent">
+            <div class="tab-pane fade show active" id="assessment" role="tabpanel" aria-labelledby="assessment-tab">
+                <div class="row justify-content-center warning_text">
+                    <strong>
+                        THIS IS A UZH STUDENT INFORMATIVE AND EDUCATIONAL PROJECT ONLY.
+                        <br>
+                        BE AWARE THAT WE ARE NOT DOCTORS,
+                        THIS IS NOT A MEDICAL WEBSITE, AND WE DO NOT PROVIDE MEDICAL ADVICES.
+                    </strong>
+                </div>
+                <br>
+                <div class="row justify-content-center">
+                    <h2>Risk Predictor</h2>
+                </div>
+                <!-- MultiStep Form -->
+                <div class="row justify-content-center">
+                    <div class="col-md-10">
+                        <form id="msform">
+                            {% csrf_token %}
+                            <ul id="progressbar">
+                                <li class="active">Personal Details</li>
+                                <li>Vitals</li>
+                                <li>Education</li>
+                                <li>Consumption</li>
+                                <li>Result</li>
+                            </ul>
+                            <fieldset>
+                                <h2 class="fs-title">Personal Details</h2>
+                                <!--<h3 class="fs-subtitle">Tell us something more about you</h3>-->
+                                <div class="row justify-content-center align-items-center">
+                                    <label for="age">Age</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <input type="text" id="age" name="age"><br><br>
+                                </div>
+                                <div class="row justify-content-center align-items-center">
+                                    <label>Gender</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" id="genderM" name="genderS" value="1"><span id="gender_m">Male</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio"class="form-check-input" id="genderF" name="genderS" value="0"><span id="gender_f">Female</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <input type="button" id="personal_details" name="next" class="next1 action-button" value="Next"/>
+                                <div class="container">
+                                    <label class="label"
+                                           data-toggle="popover"
+                                           title="Collecting data"
+                                           data-html="true"
+                                           data-container="body"
+                                           data-content="If you are not logged in we don't collect any data, else we
+                                           collect the data you input here and the corresponding result (but only if you save them by clicking on the
+                                           'Save assessment'-button). Further, we keep your register information on the server (see more below
+                                           <a id='registeredUser' href='#' onclick='go_to_registered_user'>Registered User</a>).">
+                                        Collecting Data <img src="{% static 'images/info_icon.png' %}" width="20px" height="20px">
+                                    </label>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <h2 class="fs-title">Vitals</h2>
+                                <div class="row justify-content-center align-items-center">
+                                    <label>High Blood Pressure</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" id="hb_yes" class="form-check-input" name="highbloodpressureS" value="1"><span id="hb_rad_yes">Yes</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" id="hb_no" class="form-check-input" name="highbloodpressureS" value="0"><span id="hb_rad_no">No</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center align-items-center">
+                                    <label>Heart Disease</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" id="heart_yes" class="form-check-input" name="heartdiseaseS" value="1"><span id="heart_rad_yes">Yes</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" id="heart_no" class="form-check-input" name="heartdiseaseS" value="0"><span id="heart_rad_no">No</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center align-items-center">
+                                    <label>Tobacco Use</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" id="tobacco_yes" class="form-check-input" name="tobaccouseS" value="1"><span id="tobacco_rad_yes">Yes</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" id="tobacco_no" class="form-check-input" name="tobaccouseS" value="0"><span id="tobacco_rad_no">No</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <br>
+                                <input type="button" name="previous" class="previous action-button-previous" value="Previous"/>
+                                <input type="button" name="next" class="next2 action-button" value="Next"/>
+                            </fieldset>
+                            <fieldset>
+                                <h2 class="fs-title">Education</h2>
+                                <div class="form-group">
+                                    <label>Previous Diabetes Education</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" id="education_yes" class="form-check-input" name="diabeducationS" value="1"><span id="education_rad_yes">Yes</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" id="education_no" class="form-check-input" name="diabeducationS" value="0"><span id="education_rad_no">No</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Education Level</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="degree" id="1-8" value="1-8"><span id="degree_1_8">1-8</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="degree" id="9-11" value="9-11"><span id="degree_9_11">9-11</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="degree" id="High School" value="High School"><span id="degree_hs">High School</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="degree" id="College" value="College"><span id="degree_college">College</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Diabetes Knowledge</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="knowledge" id="Poor" value="Poor"><span id="knowledge_poor">Poor</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="knowledge" id="Fair" value="Fair"><span id="knowledge_fair">Fair</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="knowledge" id="Good" value="Good"><span id="knowledge_good">Good</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <br>
+                                <input type="button" name="previous" class="previous action-button-previous" value="Previous"/>
+                                <input type="button" name="next" class="next3 action-button" value="Next"/>
+                            </fieldset>
+                            <fieldset>
+                                <h2 class="fs-title">Consumption</h2>
+                                <div class="form-group">
+                                    <label>Fruits and vegetable consumption (per week)</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="fandvcons" id="0" value="0"><span id="food_0">0</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="fandvcons" id="1-2" value="1-2"><span id="food_1_2">1-2</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="fandvcons" id="3-4" value="3-4"><span id="food_3_4">3-4</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="fandvcons" id="5 or more" value="5+"><span id="food_5_plus">5+</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Sugar-Sweetened Beverage Consumption (per week)</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="ssbcons" id="0bev" value="0"><span id="sugar_0">0</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="ssbcons" id="1" value="1"><span id="sugar_1">1</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="ssbcons" id="2" value="2"><span id="sugar_2">2</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="ssbcons" id="3 or more" value="3+"><span id="sugar_3">3+</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="ssbcons" id="Not sure bev" value="Not sure"><span id="sugar_not_sure">Not sure</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Exercise (per week)</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="exercise" id="0days" value="0"><span id="exercise_0">0</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="exercise" id="1day" value="1"><span id="exercise_1">1</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="exercise" id="2days" value="2"><span id="exercise_2">2</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="exercise" id="3days" value="3"><span id="exercise_3">3</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="exercise" id="4days" value="4"><span id="exercise_4">4</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="exercise" id="5plusdays" value="5"><span id="exercise_5">5+</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="exercise" id="Not sure ex" value="Not sure"><span id="exercise_not_sure">Not sure</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <br>
+                                <input type="button" name="previous" class="previous action-button-previous" value="Previous"/>
+                                <input type="button" name="next" class="next4 action-button" onclick="processData()" value="Assess"/>
+                            </fieldset>
+                            <fieldset>
+                                <h2 class="fs-title">Assessment</h2>
+                                <h1 id="messageoutput" hidden aria-hidden="true"></h1>
+                                <!--                            Spinner-->
+                                <div class="spinner-border text-danger" id="spinner" style="width: 3rem; height: 3rem;" role="status">
+                                    <span class="sr-only">Assessing...</span>
+                                </div>
+                                <div class="row justify-content-center" id="spinner_text">
+                                    Assessing...
+                                </div>
+                                <!--                            Spinner-->
+                                <div class="row justify-content-center align-items-center" id="predictiondiv">
+                                    <label id="predictiontext">Prediction</label>
+                                    <h3 id="predictionoutput" style="margin-left: 10px;"></h3>
+                                    <h3 style="margin-left: 16px;"><img data-toggle="popover"
+                                       title="Result types"
+                                       data-html="true"
+                                       data-content="There are only two possible results: Low Risk or High Risk. Low Risk means
+that the AI thinks that it is more probable that you don't have diabetes than that you have it. High Risk means the contrary." src="{% static 'images/info_icon.png' %}" width="20px" height="20px"></h3>
+                                </div>
+                                <div class="row justify-content-center align-items-center" id="confidencediv">
+                                    <label id="confidencetext">Confidence Score</label>
+                                    <h3 id="confidence_scoreoutput" style="margin-left: 10px;" ></h3>
+                                    <h3 style="margin-left: 20px;"><img data-toggle="popover"
+                                       title="AI's Probability"
+                                       data-html="true"
+                                       data-content="The confidence score is a value between 0 and 100 percent. It is a probability score which indicates how sure the AI is that the prediction is correct.
+                                       If you would have the result low risk and a confidence score of 79 this would mean that in 79 percent of the cases the AI would say you don't have diabetes respectively you would have it with a chance of 21 percent." src="{% static 'images/info_icon.png' %}" width="20px" height="20px"></h3>
+
+                                </div>
+                                <div class="d-none" id="assessment-error" role="alert">Please fill all inputs! Start again.</div>
+                                <ul class="sr-only" id="assessment-error-list"></ul>
+                                <br>
+                                <a href="/index">
+                                    <input type="button" name="startagain" class="action-button" value="Start Again"/>
+                                </a>
+                                {% if user.is_authenticated %}
+                                &nbsp;
+                                <input type="button" name="savedata" class="action-button" onclick="saveData()" value="Save Assessment"/>
+                                {% endif %}
+                            </fieldset>
+                            <!--                            Modal for saving result-->
+                            <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <h3>Your assessment result is successfully saved!</h3>
+                                            <br>
+                                            <h6>Saved assessment result can be viewed in 'History' tab of your profile page.</h6>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--                            Modal for saving result-->
+                            <!--              Modal for unsuccessful saving result-->
+                            <div class="modal fade" id="saveResultUnsuccessful" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="saveResultUnsuccessfulLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="saveResultUnsuccessfulUnsuccessfulLabel">Error</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            You are not authorized to use this feature!
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--              Modal for unsuccessful saving result-->
+                        </form>
+                    </div>
+                </div>
+                <!-- /.MultiStep Form -->
+            </div>
+            <div class="tab-pane fade" id="approach" role="tabpanel" aria-labelledby="approach-tab">
+                <div class="row justify-content-center">
+                    <i>Click image to view details.</i>
+                </div>
+                <div class="row justify-content-center" style="margin-top: 10px">
+                    <div class="col-auto img_spacing">
+                        <div class="row">
+                            <img class="approach" onclick="modal_approach() " style="height: 250px ; border: none;"  src="{% static 'images/approach_creative_common.png' %}">
+                        </div>
+                        <div class="row justify-content-center">
+                            Approach
+                        </div>
+                    </div>
+                    <!--                    Modal for Approach-->
+                    <div class="modal fade" id="approachModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="approachModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="approachModalLabel">Approach</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p class="txt">This is not the first prediction website/app for diabetes type II.
+                                        Therefore, we elaborate here how it differs from other websites.
+                                        Most diabetes predictors out there try to estimate the chance
+                                        of getting diabetes with medical information such as BMI, blood sugar,
+                                        blood pressure etc. (see e.g. <a href="https://mydiabcheck.ch/de/test">Diabetes Check of Group Mutuel</a>).
+                                        Our approach also needs medical information
+                                        (e.g. high blood pressure or heart disease) but it is easier
+                                        to know if you have low blood pressure than the exact value of it.
+                                        In addition to that we focus more on a person's lifestyle:
+                                        Eating, drinking sugar-sweetened beverage and smoking habits are considered.
+                                        So generally, the information the user of this website needs should be
+                                        easily accessible. Our approach also might differ from other predictors
+                                        in the technical aspects.</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" onclick="open_preprocessing_after_approach()" class="btn btn-outline-primary">
+                                        Preprocessing
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                            <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--                    Modal for Approach-->
+                    <div class="col-auto img_spacing">
+                        <div class="row">
+                            <img class="approach" onclick="modal_preprocessing()" style="height: 250px ; border: none;" src="{% static 'images/preprocessing_creative_common.png' %}">
+                        </div>
+                        <div class="row justify-content-center">
+                            Preprocessing
+                        </div>
+                    </div>
+                    <!--                    Modal for Preprocessing-->
+                    <div class="modal fade" id="preprocessingModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="preprocessingModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="preprocessingModalLabel">Preprocessing</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p class="txt">
+                                        Our original data comes from a survey done in Austin, Texas between the years 2015
+                                        and 2017 with 1'688 participants (Source:
+                                        <a href="https://data.austintexas.gov/Health-and-Community-Services/Austin-Public-Health-Diabetes-Self-Management-Educ/48iy-4sbg">
+                                            Austin Public Health Diabetes Self Management Education</a>). First, we had
+                                        to drop some columns of the dataset which were too specific for the USA. E.g.
+                                        we dropped the insurance or the medical home category of the participants as
+                                        the insurance system depends a lot on the country where you live in.
+                                        Further, we dropped the variable "Carbohydrate Counting" as we believe
+                                        that not too many people are doing it.
+                                        Second, we had to clean the dataset (e.g. combining category "college" and "some college".
+                                        Third, we put the participant's ages into bins: E.g. every participant in their twenties
+                                        then belonged to the 20-29 bin.
+                                    </p>
+                                    <p class="txt">
+                                        As an Artifical Intelligence can only handle numeric values we had to create dummy
+                                        variables such that our AI could process the data:
+                                    </p>
+                                    <p class="txt">
+                                        For an example see image below: In the original dataset there was the column Education Level which had
+                                        four answers (1-8, 9-11, High School GED, College) but as the AI cannot interpret those
+                                        values, we created four columns from this (dummy variables: Education Level_1-8,
+                                        Education Level_9-11, Education Level_High School GED and Education Level_College)
+                                        and put a 1 at the column/answer the participant selected and a 0 at the other columns.
+                                        This was repeated for multiple columns.
+                                    <p class="txt">
+                                        <img src="{% static 'images/education_dummies.png' %}" alt="Neural Network" width="450px" height="400px" class="center">
+                                    </p>
+                                    </p>
+                                    <p class="txt">
+                                        Further, we dropped rows which contained empty or invalid values (so called NaN values). In the end
+                                        we then had 504 people with diabetes and 647 people without diabetes in the dataset.
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" onclick="open_approach_before_preprocessing()" class="btn btn-outline-primary">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-left" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                            <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                        </svg>
+                                        Approach
+                                    </button>
+                                    <button type="button" onclick="open_ai_after_preprocessing()" class="btn btn-outline-primary">
+                                        Artificial Intelligence
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                            <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--                    Modal for Preprocessing-->
+                    <div class="col-auto">
+                        <div class="row">
+                            <img class="approach" onclick="modal_ai()" style="height: 250px ; border: none;"  src="{% static 'images/ai_creative_common.png' %}">
+                        </div>
+                        <div class="row justify-content-center">
+                            Artificial Intelligence
+                        </div>
+                    </div>
+                    <!--                    Modal for Artificial Intelligence-->
+                    <div class="modal fade" id="aiModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="aiModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="aiModalLabel">Artificial Intelligence</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p class="txt">
+                                        To train the AI we tried different models: First, linear models (e.g. logistic
+                                        regression) then more advanced models (e.g. RandomForestClassifier). When we tried
+                                        those models out we have seen that they unjustifiably misestimated the risk of
+                                        getting diabetes of people with age between 60-69. Although, we tried out very positive
+                                        behavior (e.g. never drinking sugar-sweetend beverages) entering 60-69 for the age
+                                        always resulted in an assessment of having a high risk of diabetes. We came to the
+                                        conclusion that the tree of the feature age must have a lot of weight in the
+                                        RandomForestClassifier so that the diabetes risk is mainly decided by the age
+                                        of the user. Therefore, we could not make use of it.
+                                    </p>
+                                    <p class="txt">
+                                        In the end, we decided to train a Neural Network, more exactly a
+                                        Multi-Layer-Perceptron. This is a Neural Network with more than one hidden
+                                        layer (where the calculation of the weights and its decisions happen). We did a GridSearchCV
+                                        to find the best hyperparameters of the MLP (click
+                                        <a href="https://www.mygreatlearning.com/blog/gridsearchcv/">here</a>
+                                        for more information on GridSearchCV). The best results were given with a learning rate of
+                                        0.01, an alpha of 0.1 and the identity (linear) activation function.
+                                        The activation function is used to calculate the output of a node in the Neural Network.
+                                        The identity function is just f(x) = x, so there is no calculation needed.
+                                        The learning rate controls the step-size in updating the weights of the nodes.
+                                        Alpha is also called regularization term (in this case L2 regularization) and is intended to prevent overfitting
+                                        (model is perfectly fitted on training data but is not able to generalize it for new data). For more information on these terms
+                                        check the book called "Neural Network Methods for Natural Language Processing" of Yoav Goldberg (published in 2017).
+                                        </p>
+
+					<p class="txt">
+                                        The accuracy this method achieves is nearly the same as in the logistic regression but the false
+                                        assessment of the people in their sixties was gone. Overall, we achieve an accuracy
+                                        of 69% percent (with a training/test split of 80/20 of the dataset) which means
+                                        that in 31% of the cases we expect a false prediction of our predictor.
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" onclick="open_preprocessing_before_ai()" class="btn btn-outline-primary">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-left" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                            <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                        </svg>
+                                        Preprocessing
+                                    </button>
+                                    <button type="button" onclick="open_legal_after_ai()" class="btn btn-outline-primary">
+                                        Legal
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                            <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!--                    Modal for Artificial Intelligence-->
+                </div>
+                <br>
+
+
+
+
+
+                <div class="row justify-content-center">
+                    <div class="col-auto img_spacing">
+                        <div class="row">
+                            <img class="approach" onclick="modal_legal()" style="height: 250px ; border: none;" src="{% static 'images/legal_creative_common.png' %}">
+                        </div>
+
+
+
+                        <div class="row justify-content-center">
+                            Legal
+                        </div>
+                    </div>
+                    <!--                    Modal for Legal -->
+                    <div class="modal fade" id="legalModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="legalModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="legalModalLabel">Privacy by design and Privacy by default</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p class="txt">
+                                        Through our project, we wanted to illustrate privacy by design and privacy by default in a transparent way with a userfriendly approach from the very start of this project.
+
+                                        Privacy by design is a concept where privacy protection considerations must be taken into account into the design of the product or service that will collect, process or use personal data. This means that privacy must be a concern of the developers from the beginning in order to integrate it into the structure of the service
+                                        (<a href="https://gdpr-info.eu/issues/privacy-by-design/#:~:text=The%20term%20%E2%80%9CPrivacy%20by%20Design,in%20the%20technology%20when%20created">EU GDPR info</a>).
+                                        For example, at the beginning of our project we had to take into consideration the principle of minimization of personal data, which requires that the collection of personal data is strictly limited to what is necessary for the realization of the service. No superfluous data should be collected if it has no use for the service.
+                                        </p>
+
+					<p class="txt">
+                                        Privacy by default is the consequence of privacy by design, which implies that from the conception of the service or product, the highest level of privacy protection is implemented and applicable by default. This means that without any intervention from the user, all available measures to protect personal data and limit its collection must be ensured (<a href="https://edps.europa.eu/data-protection/our-work/subjects/privacy-default_en">EUROPEAN DATA PROTECTION SUPERVISOR</a>).
+                                        For example, when creating a UDP (UZH Diabetes Predictor) user account, the user is confronted with a box giving him the necessary instructions to understand the data he is about to disclose. This is an application of privacy by default insofar as access to personal data (email address, answers to the risk predictor test) is subject to the user's prior authorization, without which the site will not grant access to the information.
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" onclick="open_ai_before_legal()" class="btn btn-outline-primary">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-left" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                            <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                        </svg>
+                                        Artificial Intelligence
+                                    </button>
+                                    <button type="button" onclick="open_research_after_legal()" class="btn btn-outline-primary">
+                                        Research Purpose
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                            <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- modal for Legal-->
+                    <div class="col-auto img_spacing">
+                        <div class="row">
+                            <img class="approach" onclick="modal_research()" style="height: 250px ; border: none;"  src="{% static 'images/research_creative_common.png' %}">
+                        </div>
+                        <div class="row justify-content-center">
+                            Research Purpose
+                        </div>
+                    </div>
+                    <!--                    Modal for Research Purpose-->
+                    <div class="modal fade" id="researchModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="conclusionModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="researchModalLabel">Research Purpose</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p class="txt">
+                                        The <b>Federal Act on Data Protection (FADP)</b> contains two specific regulations concerning the processing of personal data for research purposes, one for the private sector <b>art. 13 para. 2 e FADP</b> and the other one that concerns the federal bodies only <b>art. 22 FADP</b>. Since we are a group of private persons and in no event we are federal bodies, we are subject to a less stringent legal regime if the following conditions are met:
+
+                                        Firstly, the purpose of the processing of personal data does not relate to persons. That means that the identity of the person whose data is processed plays no role for the processing and anonymized or at least pseudonymized data could also be used to achieve the same purpose. This is the case for our project where the processing concerns only the users’: email adress, username, password age, gender, educational level, diabetes status, heart disease, blood pressure, smoking, diabetes education, diabetes knowledge, fruit and vegetable consumption per week, sweet beverages consumption per week and physical exercise per week.
+
+                                       . Secondly, the results of the research are published in a form that does not allow the identification of the persons concerned. As we guarantee, the results are not concerning the individuals taking the test at all, and our goal as explained above is completely else. We found our data on <a href="https://data.austintexas.gov/Health-and-Community-Services/Austin-Public-Health-Diabetes-Self-Management-Educ/48iy-4sbg">
+                                        Austin Public Health Diabetes Self Management Education</a> and our algorithm is set and will not be modified. Therefore big data and personal private information related to the different questions in the test would be irrelevant to collect for us.
+
+                                        The <b>art. 13 par. 2 let. e FADP</b> therefore refers to situations in which non-anonymized data as the one on our website (given the email address linked to the information) are used for purposes that do not relate to individuals, which excludes research that is directly directed at individuals. "On the other hand there is the anonymous access to UDP, where no data is collected. Therefore the unregistered users are not concerned by the <b>FADP</b>.
+
+                                        The researcher must use anonymized data within the limits of the project's possibilities, it refers to the principle of the <b>art. 4 par. 2 FADP</b> which cites the principle of good faith and proportionality i.e. without any possibility of attributing data to an identified or identifiable person or at the cost of excessive efforts. In our case, however, this was not technically possible because of the means of retrieving one's password for the user account, which is only possible via e-mail. Since participation in a project with an educational purpose like ours is optional, the data subject must also consent to the processing of his or her data and has at least the right to object. It should be noted that this consent is indispensable in the case of processing of data subject to professional secrecy, such as medical secrecy <b>art. 321bis of  the Swiss Criminal Code</b> (<b>SCC</b>), article that refers to the <b>LRH</b>.
+                                        This privilege reserved for research projects does not, however, dispense with the need to provide information about the data processing. Thus, the data subject must be given all objective and complete information on the planned data processing in advance <i>“at the latest when the data is stored or if the data is not stored, on its first disclosure to a third party”</i> on according to <b>art. 14 par. 3 FADP</b>.
+
+                                        The requirements to be met by the researcher can vary, since each research is seeking different purposes and therefore are subject to each individual case, which must be examined in the light of the context of the research and the specificity of the concrete cases <a href="https://lexing.ch/wp-content/uploads/2017/10/31.pdf">(FANTI 2017)</a>. The researcher, as the person responsible for data protection in the processing of personal data, will comply with the following points in particular in the context of his research project.
+
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" onclick="open_legal_before_research()" class="btn btn-outline-primary">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                            <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                        </svg>
+                                        Legal
+                                    </button>
+                                    <button type="button" onclick="open_conclusion_after_research()" class="btn btn-outline-primary">
+                                        Conclusion
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                            <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--                    Modal for Research Purpose-->
+                    <div class="col-auto">
+                        <div class="row">
+                            <img class="approach" onclick="modal_conclusion()" style="height: 250px ; border: none;" src="{% static 'images/conclusion_creative_common.png' %}">
+                        </div>
+                        <div class="row justify-content-center">
+                            Conclusion
+                        </div>
+                    </div>
+                    <!--                    Modal for Conclusion-->
+                    <div class="modal fade" id="conclusionModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="conclusionModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="conclusionModalLabel">Conclusion</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p class="txt">
+                                        Overall we think we can raise awareness on the diabetes II-type illness by this
+                                        website, by adding the component of the people's lifestyle choices as an aspect
+                                        of the illness. Nevertheless, we are aware that there are AIs out there which perform much better than our predictor e.g. by using more data.
+                                        Additionally we think we can clearly point out to the user why we have chosen which legal measures and also further explain this measure.
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" onclick="open_research_before_conclusion()" class="btn btn-outline-primary">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                            <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                        </svg>
+                                        Research Purpose
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--                    Modal for Conclusion-->
+                </div>
+                <br>
+
+            <p style="font-size: 10px; text-align: center;margin-top: 15px">All the pictures from our website are taken from <a href="https://pixabay.com/">https://pixabay.com/</a> and do not require any attribution.</p>
+
+
+            </div>
+            <div class="tab-pane fade" id="privacy" role="tabpanel" aria-labelledby="privacy-tab">
+                <div class="row justify-content-center">
+                    <div class="col-10">
+                        <p class="txt"
+                           data-toggle="popover"
+                           title="Compliance Issues"
+                           data-html="true"
+                           data-content="<p>We have built our website in compliance with the law in force to date.
+                            Nevertheless, aware of the reform of the <b>Swiss Federal Act on Data Protection
+                            (FADP)</b> adopted by Parliament on September 25, 2020, we have already updated
+                            ourselves on the most fundamental principles of this revision that will bring our
+                            law up to date with the <b>GDPR (General Data Protection Regulation)</b> in a near
+                            future. This is why we wanted to insist on certain key principles of this revision
+                            that will reinforce our data protection laws, in order to be up to date before the
+                            time comes.<a id='pp' href='#ref1'><sup>[1]</sup></a></p>
+                            <p>The <b>FADP</b> is outdated due to rapid technological developments. The total
+                            revision adapts the <b>FADP</b> to new technological and social conditions. The
+                            main themes of this revision are: much stricter sanctions, reinforced information
+                            obligations, the creation of a register of data processing activities and, above all,
+                            the extension of the data subject's rights: especially transparency of data processing,
+                            which will be improved, and the self-determination of data subjects, which will be
+                            strengthened.<a id='pp' href='#ref2'><sup>[2]</sup></a></p>">
+                            <span class="speech-bubble"
+                                  onmouseover="highlight_sentence(this)"
+                                  onmouseout="remove_highlight(this)">
+                                The following privacy policy applies to the use of our website and the services
+                                offered on it. This privacy policy informs you about the collection of your personal
+                                data. By using this website, you agree to this privacy policy.
+                            </span>
+                        </p>
+                        <p class="txt"
+                           data-toggle="popover"
+                           title="Revision Necessity"
+                           data-html="true"
+                           data-content="<p>The revision will also enable Switzerland to ratify the revised Council of
+                           Europe Convention on data protection ETS 108 and to implement the European Directive (EU)
+                           016/680 on data protection in criminal matters, which is linked to the Schengen Agreement.
+                           In addition, the revision aims to bring Swiss data protection legislation closer to the
+                           requirements of Regulation (EU) 2016/679. This work is necessary to ensure that the EU
+                           continues to recognize Switzerland as a country with a sufficient level of data protection
+                           so that the possibility of exchanging data with it is preserved.
+                           <a id='pp' href='#ref1'><sup>[1]</sup></a></p>
+                           <p>We have therefore limited ourselves to a few key principles regarding the anticipation
+                           of the new <b>FADP</b> revision.<a id='pp' href='#ref3'><sup>[3]</sup></a></p>">
+                            <span class="speech-bubble"
+                                  onmouseover="highlight_sentence(this)"
+                                  onmouseout="remove_highlight(this)">
+                            The goal of privacy policies is to explain you what happens with your data. We are
+                                aware of the sensitivity of the data we are collecting and this is why it is our duty to
+                            inform you about it in few steps, making the privacy policy clear and understandable for all.
+                            We are totally transparent with our manner of collecting your personal data and want you to
+                            know about it.
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-9">
+                        <div class="accordion" id="privacy_policy_collapse">
+                            <div class="card">
+                                <div class="card-header" id="headingOne">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            Who we are and how to reach us
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#privacy_policy_collapse">
+                                    <div class="card-body">
+                                        <p class="txt"
+                                           data-toggle="popover"
+                                           title="About Us"
+                                           data-html="true"
+                                           data-content="<p>Even if UDP is “only” few students creating a project in
+                                           the scope of a lecture at University, UDP still refers to a group of
+                                           private persons who carry out data processing without being concerned
+                                           by the exceptions of the second paragraph of the scope, <b>art. 2 par.
+                                           2 FADP</b>. Therefore the <b>art. 2 par. 1 FADP</b> applies and UDP is
+                                           obliged to comply to the <b>FADP</b> and to other laws even if, as we will
+                                           see, UDP benefits from a less restrictive regime of interpretation due
+                                           to its research purpose.</p>">
+                                            <span class="speech-bubble"
+                                                  onmouseover="highlight_sentence(this)"
+                                                  onmouseout="remove_highlight(this)">
+                                            UDP is a project of students from the University of Zurich for the
+                                            FS21 Artificial Intelligence: Technology and Law course. The project aims
+                                            to explore the different interactions between artificial intelligence
+                                            and law through a web application and, at the same time, bring some
+                                            educational information on the issue of diabetes. You can find more
+                                            information in the "Our Approach" tab.
+                                            <br>
+					<br>
+                                            Should you have any questions regarding our privacy policy or the
+                                            web application in general, feel free to
+                                            <a href="mailto: diabetespredictor@gmail.com">send us an email</a>.
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" id="headingTwo">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                            About the data we are collecting
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#privacy_policy_collapse">
+                                    <div class="card-body">
+                                        <p class="txt"
+                                           data-toggle="popover"
+                                           data-html="true"
+                                           title="Data collection laws (1/2)"
+                                           data-content="<p>Even if the purpose of our work is not “to extract”
+                                           information from the data we collect, but rather to provide the
+                                           possibility to use this data to create an account, to retrieve one's
+                                           password or simply to subscribe to the newsletter, the <b>art. 3 let.
+                                           e FADP</b> still applies. Processing is considered as: <i>“any
+                                           operation with personal data, irrespective of the means applied
+                                           and the procedure, and in particular the <b>collection</b>,
+                                           <b>storage</b>, use, revision, disclosure, <b>archiving or
+                                           destruction of data</b>;”</i></p>
+                                           <p>The beginning of the <b>section 2 of FADP</b> starts with the
+                                           <b>art. 4 FADP</b> that states that: <b>Art. 4 par.1 FADP</b>
+                                           <i>“Personal data may only be processed lawfully”</i>. We have built the
+                                           privacy policy respecting the law, our text is in accordance
+                                           with the LRH.</p>
+                                           <p><b>Art. 4 par.2 FADP</b> <i>“Its processing must be carried out in
+                                           good faith and must be proportionate”</i>. From the simple purpose of our
+                                           work to the importance we bring to conveying information and informed
+                                           consent by doing more than is necessary for good faith. One of our main
+                                           challenges was to minimize the amount of data we wanted to collect so
+                                           as not to overload the user with too many personal questions, while at
+                                           the same time ensuring that the risk predictor worked well. This
+                                           balancing act between the anonymous use and the non-anonymous use
+                                           via the user account where information are stored for the simple
+                                           purpose of storage reflects the respect of proportionality.
+                                           <a id='pp' href='#ref5'><sup>[5]</sup></a> The choice is finally for the user
+                                           to make, we ensure to respect that.
+                                           <p><b>Art. 4 par. 3 FADP</b> <i>“Personal data may only be processed
+                                           for the purpose indicated at the time of collection, that is evident
+                                           from the circumstances, or that is provided for by law”</i></p>
+                                           <p><b>Art. 4 par. 4 FADP</b> <i>“The collection of personal data and
+                                           in particular the purpose of its processing must be evident to the
+                                           data subject”</i></p>
+                                           <p>As stated in our privacy policy, the data collected is used only for
+                                           the purpose stated and nothing else. We indicate this in the GTC. We
+                                           did not want to subject all users to the same rules, which would be
+                                           confusing given our two different options (anonymous and not anonymous).
+                                           In the GTC you will only find the rules that apply to everyone, i.e. also
+                                           the necessary information for those who use the website without creating
+                                           an account. We inform these anonymous users that no data will be collected.
+                                           However, when circumstances change, i.e. when a user decides to create an
+                                           account in order to take advantage of the service offered, we refer him/her
+                                           directly to the privacy policy where everything is explained in detail in
+                                           a transparent manner in a language accessible to all, which he/she
+                                           acknowledges having read and understood before entering the site. A
+                                           second box to be ticked concerns sensitive data relating to medical
+                                           data that the patient may disclose in the test. This is why we have
+                                           reinforced the level of consent with a second box provided for this
+                                           purpose. The patient is therefore sufficiently informed about what we
+                                           do with his or her data and what his or her rights are. The several
+                                           references to our privacy policy are essentially intended to appear
+                                           clear and make the user experience smooth.</p>
+                                           <p><b>Art. 4 par. 5 FADP</b> <i>“If the consent of the data subject is
+                                           required for the processing of personal data, such consent is valid only
+                                           if given voluntarily on the provision of adequate information.
+                                           Additionally, consent must be given expressly in the case of processing
+                                           of sensitive personal data or personality profiles”</i>.</p>
+                                           <p>We give users the choice to disclose their email or not, they have at
+                                           the end of reading our privacy policy all the information to make an
+                                           informed decision. They know what they are disclosing and why they are
+                                           doing it, with the consequences it may have. We do not only explain to the
+                                           user what happens with his data but also guide him through the steps so
+                                           that he enjoys the best possible experience on the site. As our goal is
+                                           not commercial, we have no particular interest in having him subscribe,
+                                           except to show him in an educational way how the risks are calculated by
+                                           an algorithm.</p>
+                                           <p>Since we are not responsible for the accuracy of the data provided
+                                           by ordinary visitors or registered users, we do not check this
+                                           information and do not have access to it. It is only intended to inform
+                                           the curious user. We can imagine that the user can write anything he
+                                           wants and thus distort the estimation of the algorithm, the disclaimer
+                                           in the GTC is also there to exempt us from responsibility in such a
+                                           case. Nevertheless, we give the possibility to correct the data if
+                                           necessary. To do this we have set up two distinct options, the first:
+                                           inform us of the problem and ask us to correct the false information.
+                                           The second: to use the tools available to do it by yourself by following
+                                           the instructions on the site. In this way we are in conformity with
+                                           <b>art. 5 al. 1 and 2 FADP</b>.</p>">
+                                            <span class="speech-bubble"
+                                                  onmouseover="highlight_sentence(this)"
+                                                  onmouseout="remove_highlight(this)">
+                                            We only collect data necessary to offer you the most accurate risk
+                                            prediction our algorithm can. We already use a set of data that allows
+                                            us to provide you an anonymous version of the web application aiming
+                                            for the most user-friendly approach.
+                                            </span>
+                                        </p>
+                                        <p class="txt"
+                                           data-toggle="popover"
+                                           data-html="true"
+                                           title="Data collection laws (2/2)"
+                                           data-content="<p>The <b>art. 3 let. a FADP</b> has a very broad scope to
+                                           define what personal data is, it includes any information leading to
+                                           identify a person or indirectly identifiable for person without
+                                           developing disproportionate means to find the identity of the user.
+                                           So when we link a user's email address to their UDP profile, the data
+                                           becomes identifiable to the user. In other words, in our case it becomes
+                                           personal data from the moment the email address is given in order to
+                                           create the user account.<a id='pp' href='#ref6'><sup>[6]</sup></a></p>
+                                           <p>In addition to being personal, some of the data collected is
+                                           sensitive <b>art. 3 let. c par. 2 FADP</b>. Indeed, the questions to be
+                                           filled in by the users in order to carry out the diabetes risk test
+                                           require a certain level of discretion given the value of the information
+                                           the user puts in if he or her is logged in. Thus, information such as
+                                           <b><i>diabetes status, heart disease, blood pressure, smoking</b></i>,
+                                           in this context also <b><i>fruit and vegetable consumption,
+                                           sweet-beverage consumption, physical exercise</b></i> (because they
+                                           could influence the risk of illnesses in this situation)
+                                           <a id='pp' href='#ref7'><sup>[7]</sup></a> are to be considered as sensitive,
+                                           while information <b><i>age, gender, education level, diabetes
+                                           education, diabetes knowledge</b></i> are to be considered as simple
+                                           personal data.<a id='pp' href='#ref6'><sup>[6]</sup></a></p>
+                                           <p>The legal consequence of this differentiation lies in <b>art. 14
+                                           FADP</b>. This provision requires a higher level of information
+                                           regarding the nature of the data collected and the data has to be
+                                           given expressly <b>art. 4 par. 5 FADP</b>. No restrictions are foreseen
+                                           in the <b>FADP</b>, but other laws are relevant for medical data as well.
+                                           It is important to specify that for research projects collecting medical
+                                           data, their processing is subject to the prior consent of the persons
+                                           concerned (or to an authorization to lift professional secrecy in
+                                           accordance with <b>Art. 321b is of the Swiss Penal Code 311.0</b>,
+                                           which refers to <b>Art. 34 of the Federal Law on Research on Human
+                                           Beings 810.30</b> (<b>LRH</b>).<a id='pp' href='#ref8'><sup>[8]</sup></a></p>
+                                           <p>It should be noted that a new category defining personal data
+                                           requiring special protection will appear in the revision of the
+                                           <b>FADP</b>. Thus the definition of 'sensitive data' has been expanded.
+                                           It will in future also include data on ethnicity, genetic data and
+                                           biometric data that clearly identify a natural person.<a id='pp' href='#ref4'><sup>[4]</sup></a></p>">
+                                            <span class="speech-bubble"
+                                                  onmouseover="highlight_sentence(this)"
+                                                  onmouseout="remove_highlight(this)">
+                                            Data will only be collected or stored depending on how you choose to
+                                            interact with the web application.
+                                            </span>
+                                        </p>
+                                        <p>
+                                        <div class="accordion" id="web_usage">
+                                            <div class="card inside_card">
+                                                <div class="card-header inside_header" id="scopeOne">
+                                                    <h2 class="mb-0">
+                                                        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseScopeOne" aria-expanded="true" aria-controls="collapseScopeOne">
+                                                            Unregistered user
+                                                        </button>
+                                                    </h2>
+                                                </div>
+                                                <div id="collapseScopeOne" class="collapse" aria-labelledby="headingOne" data-parent="#web_usage">
+                                                    <div class="card-body">
+                                                        <p class="txt">
+                                                            We do not collect your data. Everything is entirely anonymous until you are registered and logged in.
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card inside_card">
+                                                <div class="card-header" id="scopeTwo">
+                                                    <h2 class="mb-0" id="element_target">
+                                                        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseScopeTwo" aria-expanded="false" aria-controls="collapseScopeTwo">
+                                                            Registered user
+                                                        </button>
+                                                    </h2>
+                                                </div>
+                                                <div id="collapseScopeTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#web_usage">
+                                                    <div class="card-body">
+                                                        <p class="txt">
+                                                            When creating an account, you are only required to enter
+                                                            your username, email address, and password. During
+                                                            assessment, you will have an option to just check the
+                                                            result or save your assessment details and result. Saving
+                                                            an assessment means that the information you entered in
+                                                            "Personal Details", "Vitals", "Education", and
+                                                            "Consumption" and the "Prediction" and "Confidence Score"
+                                                            from the result will be saved in your account. You will be
+                                                            able to view your saved assessments and will have the
+                                                            liberty do delete it. The same applies to your user account, you
+                                                            will be able to delete it if you do not want your details
+                                                            to be affiliated with the web application anymore.
+                                                        </p>
+                                                        <p class="txt">Please note that you are the only person responsible for
+                                                            maintaining the confidentiality of your password and login
+                                                            and are fully responsible for all activities that occur
+                                                            under your password or account, whether or not caused by
+                                                            your knowledge (unless such activities are caused by our
+                                                            acts or omissions).</p> <p class="txt">If you knowingly provide your login
+                                                        information and password to any other person, your rights
+                                                        to use and access the Service may be temporarily suspended
+                                                        or terminated.</p>
+                                                        </p>
+                                                        <p class="txt">
+                                                            If you notice that your account is breached or there is an
+                                                            unauthorized activity in your account, you should
+                                                            <a href="mailto: diabetespredictor@gmail.com">send us an
+                                                                email</a> immediately so we can take appropriate actions.
+                                                        </p>
+                                                        <p class="txt">
+                                                            We also provide you a feature where you can reset your
+                                                            password in case you forget your current password.
+                                                            This feature will require you to use the email address
+                                                            you provided during registration.
+                                                        </p>
+                                                        <p class="txt">
+                                                            Lastly, during registration, you can subscribe or not to
+                                                            our newsletter. Our newsletters will include informing
+                                                            users about our new assessment feature and reminding users
+                                                            about when their last assessment was. If you opt to not
+                                                            receive newsletters, you should not subscribe upon
+                                                            registration. You can still change your subscription
+                                                            after registration by going to your Profile page.
+                                                        </p>
+                                                        <p>
+                                                        <div class="accordion" id="registered_user">
+                                                            <div class="card inside_card">
+                                                                <div class="card-header inside_header" id="registerOne">
+                                                                    <h2 class="mb-0">
+                                                                        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseRegisterOne" aria-expanded="true" aria-controls="collapseRegisterOne">
+                                                                            How we collect data
+                                                                        </button>
+                                                                    </h2>
+                                                                </div>
+                                                                <div id="collapseRegisterOne" class="collapse" aria-labelledby="headingOne" data-parent="#registered_user">
+                                                                    <div class="card-body">
+                                                                        <p class="txt"
+                                                                           data-toggle="popover"
+                                                                           title="Sensitive data handling (1/2)"
+                                                                           data-html="true"
+                                                                           data-content="<p>Even if the purpose of
+                                                                           our work is not medical or related to
+                                                                           research on human beings as such,
+                                                                           <b>art. 3 let. f LRH </b> obliges us
+                                                                           to respect this law and the principles
+                                                                           derived from it by the sole fact that
+                                                                           we possess personal data related to
+                                                                           health: information concerning a
+                                                                           determined or determinable person which
+                                                                           is related to his state of health or his
+                                                                           illness, including genetic data. We are
+                                                                           therefore subject to this law and to
+                                                                           its ordinance as well. <b>LRH</b> and
+                                                                           the related <b>Ordinance on Human
+                                                                           Research</b> (<b>ORH</b>) and this has
+                                                                           as consequences the following
+                                                                           obligations:</p>">
+                                                                            <span class="speech-bubble"
+                                                                                  onmouseover="highlight_sentence(this)"
+                                                                                  onmouseout="remove_highlight(this)">
+                                                                            Your data, your choice.
+                                                                            Since you have the choice, the only way we
+                                                                            can collect your personal data is if you
+                                                                            disclose it to us of your own free will
+                                                                            as you are informed on the data we
+                                                                            collect (refer to
+                                                                            <a href="#collapseRegisterTwo"
+                                                                               onclick="toogleRegisterTwo()">
+                                                                                What we are collecting and for what purpose?</a>
+                                                                            </span>
+                                                                        </p>
+                                                                        <p class="txt"
+                                                                           data-toggle="popover"
+                                                                           title="Sensitive data handling (2/2)"
+                                                                           data-html="true"
+                                                                           data-content="<p>Firstly, the reinforcement
+                                                                           of the consent which must be informed
+                                                                           <b>art. 7 LRH</b> in addition to that
+                                                                           required by <b>art. 4 FADP</b>. Secondly,
+                                                                           it requires the informed consent,
+                                                                           specified in <b>art. 16 LRH</b>.
+                                                                           The informed consent means to inform
+                                                                           orally or in writing the nature, the
+                                                                           purpose, the duration, the course of
+                                                                           the research project, the foreseeable
+                                                                           risks and constraints, the expected
+                                                                           benefit of the research project, the
+                                                                           measures intended to ensure the protection
+                                                                           of personal data, the rights.</p>">
+                                                                            <span class="speech-bubble"
+                                                                                  onmouseover="highlight_sentence(this)"
+                                                                                  onmouseout="remove_highlight(this)">
+                                                                            We do not collect any information about
+                                                                            your username and password, we just make
+                                                                            sure that they are stored correctly.
+                                                                            </span>
+                                                                        </p>
+                                                                        <p class="txt">
+                                                                            We remind you that if you do not want your
+                                                                            data to be collected you can use the
+                                                                            website without logging in. When logged
+                                                                            in, you still have the option to delete
+                                                                            your risk results in your results history
+                                                                            tab.
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card inside_card">
+                                                                <div class="card-header inside_header" id="registerTwo">
+                                                                    <h2 class="mb-0">
+                                                                        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseRegisterTwo" aria-expanded="false" aria-controls="collapseRegisterTwo">
+                                                                            What we are collecting and for what purpose
+                                                                        </button>
+                                                                    </h2>
+                                                                </div>
+                                                                <div id="collapseRegisterTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#registered_user">
+                                                                    <div class="card-body">
+                                                                        <p class="txt"
+                                                                           data-toggle="popover"
+                                                                           title="Transparency"
+                                                                           data-html="true"
+                                                                           data-content="<p>Before talking about how
+                                                                           our website was built to protect our users'
+                                                                           data, it is worth defining some terminology
+                                                                           and how the <b>Swiss Federal Data
+                                                                           Protection Act 235.1</b>(<b>FADP</b>) is
+                                                                           governing our project. Neither in the
+                                                                           current <b>FADP</b> nor in the <b>revised
+                                                                           FADP</b> is there any obligations about
+                                                                           the form in which users can find
+                                                                           information about their data. The legal
+                                                                           obligation is limited to informing in an
+                                                                           “appropriate way” <b>art. 8 FADP</b>, we
+                                                                           have therefore chosen fully transparent
+                                                                           version in the form of a privacy policy.
+                                                                           <a id='pp' href='#ref4'><sup>[4]</sup></a></p>
+                                                                           <p>In Switzerland, the Data Protection Act
+                                                                           protects individuals (and legal entities)
+                                                                           who are a subject to data processing. Our
+                                                                           users are therefore affected by this law
+                                                                           from the moment their personal data is
+                                                                           processed, and only then. When the user
+                                                                           enters the website, we notify him that no
+                                                                           data will be processed without his
+                                                                           consent. In that situation the <b>FADP</b>
+                                                                           does not apply to this user. The relevant
+                                                                           provisions are <b>art. 1 and art. 3 b)
+                                                                           FADP</b> for the users that decide to
+                                                                           provide us with their data, by creating
+                                                                           an account.</p>">
+                                                                            <span class="speech-bubble"
+                                                                                  onmouseover="highlight_sentence(this)"
+                                                                                  onmouseout="remove_highlight(this)">
+                                                                            UDP only collects personal data that is
+                                                                            absolutely necessary for the performance
+                                                                            of its tasks. Username is collected and
+                                                                            password is set in order for registered
+                                                                            users to access their account. Email
+                                                                            addresses are collected so that users will
+                                                                            have the capability to reset their password
+                                                                            in case it is forgotten and also, for us to
+                                                                            be able to send newsletters when the
+                                                                            user is subscribed. Additionally we save the data you provide us
+                                                                            for the prediction, in order to see your history. The data we save for the predictions are
+                                                                            age, gender, educational level, diabetes status, heart disease, blood pressure, smoking,
+                                                                            diabetes education, diabetes knowledge, fruit and vegetable consumption per week,
+                                                                            sweet beverages consumption per week and physical exercise per week.
+
+                                                                            </span>
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card inside_card">
+                                                                <div class="card-header inside_header" id="registerFour">
+                                                                    <h2 class="mb-0">
+                                                                        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseRegisterFour" aria-expanded="false" aria-controls="collapseRegisterFour">
+                                                                            Where  your data is stored and who has access to it
+                                                                        </button>
+                                                                    </h2>
+                                                                </div>
+                                                                <div id="collapseRegisterFour" class="collapse" aria-labelledby="headingTwo" data-parent="#registered_user">
+                                                                    <div class="card-body">
+                                                                        <p class="txt">
+                                                                            In view of the sensitivity of the data, regarding the security mentioned in <b>art. 7 FADP</b>, the data must be protected against unauthorized processing by appropriate organizational and technical measures. This means, that the data must be kept in a secure place, the electronic data must be encrypted, access to the data must be restricted to a limited and defined number of people, the data must be treated confidentially (specified by <b>art. 8 to 12</b> of the <b>Ordinance to the Federal Act on Data Protection 235.11</b> (<b>OFADP</b>)
+                                                                            The right of access to the user's personal information is guaranteed in the privacy policy. Thus, if the user wishes to know, in spite of the full transparency that we show, all that we have in our possession concerning him, we as controller will provide him with the information in accordance with <b>art. 8 FADP</b>.
+                                                                            All our data are stored in Switzerland at <a href="https://www.infomaniak.com/en">Infomaniak</a>, a professional web hosting provider. Infomaniak is approved and benefits from the certifications ISO 14001, ISO 50001 and ISO 27001 in accordance with <b>art. 11 FADP</b>. The server where we store the data guarantees the protection of the data through adequate technical and organizational measures <b>art. 8 and 9 OFADP</b>.
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card inside_card">
+                                                                <div class="card-header inside_header" id="registerFive">
+                                                                    <h2 class="mb-0">
+                                                                        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseRegisterFive" aria-expanded="false" aria-controls="collapseRegisterFive">
+                                                                            For how long the data is stored
+                                                                        </button>
+                                                                    </h2>
+                                                                </div>
+                                                                <div id="collapseRegisterFive" class="collapse" aria-labelledby="headingTwo" data-parent="#registered_user">
+                                                                    <div class="card-body">
+                                                                        <p class="txt">
+                                                                            Your personal information will be kept for as
+                                                                            long as it is needed to send you the necessary
+                                                                            information in the newsletters provided for
+                                                                            this purpose. However, due to the nature of
+                                                                            this project, we reserve the right to modify
+                                                                            or delete the site at any time. When the site
+                                                                            will be deleted, all data related to your
+                                                                            account will be deleted as well. You will be
+                                                                            notified 7 days prior to the deletion of the web
+                                                                            application. After 7 days from notification,
+                                                                            all data will be deleted and unrecoverable.
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card inside_card">
+                                                                <div class="card-header inside_header" id="registerSix">
+                                                                    <h2 class="mb-0">
+                                                                        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseRegisterSix" aria-expanded="false" aria-controls="collapseRegisterSix">
+                                                                            Security
+                                                                        </button>
+                                                                    </h2>
+                                                                </div>
+                                                                <div id="collapseRegisterSix" class="collapse" aria-labelledby="headingTwo" data-parent="#registered_user">
+                                                                    <div class="card-body">
+                                                                        <p class="txt">
+                                                                            We are aware of the sensitivity of the data we
+                                                                            collect and the security of your data is
+                                                                            important to us. UDP has taken the necessary
+                                                                            measures to ensure an adequate level of
+                                                                            security to secure your personal data.
+                                                                        </p>
+                                                                        <p class="txt">
+                                                                            In this way, we make sure that they are
+                                                                            not lost, accessed, disclosed, modified nor
+                                                                            used without the authorization that
+                                                                            only we have. The only persons authorized to
+                                                                            process your personal data are the UDP and
+                                                                            for the sole purpose mentioned in
+                                                                            <a href = "#collapseRegisterTwo" onclick="toogleRegisterTwo()">What are we collecting? For what purpose?</a>, and for a limited time
+                                                                            mentioned in <a href = "#collapseRegisterFive" onclick="toogleRegisterFive()">For how long are we storing the data?</a>.
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card inside_card">
+                                                                <div class="card-header inside_header" id="registerSeven">
+                                                                    <h2 class="mb-0">
+                                                                        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseRegisterSeven" aria-expanded="false" aria-controls="collapseRegisterSeven">
+                                                                            Your Rights
+                                                                        </button>
+                                                                    </h2>
+                                                                </div>
+                                                                <div id="collapseRegisterSeven" class="collapse" aria-labelledby="headingTwo" data-parent="#registered_user">
+                                                                    <div class="card-body">
+                                                                        <p class="txt">
+                                                                            You have the right to request any information
+                                                                            concerning your personal data at any time.
+                                                                            You also have the right to request the
+                                                                            correction or deletion of your personal data.
+                                                                            You may also limit or withdraw your consent
+                                                                            to the processing of your personal data by
+                                                                            us at any time.
+                                                                        </p>
+                                                                        <p class="txt"
+                                                                           data-toggle="popover"
+                                                                           title="Request information"
+                                                                           data-html="true"
+                                                                           data-content="<p>Therefore, the
+                                                                           requirements for the legal duty to
+                                                                           provide information on the collection
+                                                                           of sensitive personal data are:</p>
+                                                                           - the type and extent of the data
+                                                                           collected/processed <b>art. 14 par.
+                                                                           2 let. c FADP</b>
+                                                                           <br>
+                                                                           - the person responsible for the processing
+                                                                           <b>art. 14 par. 2 let. a FADP</b>
+                                                                           <br>
+                                                                           - the purposes of the processing
+                                                                           <b>art. 14 par. 2 let. b FADP</b>
+                                                                           <br>
+                                                                           - the communication of the data to third
+                                                                           parties / categories of recipients /
+                                                                           planned transborder <b>art. 14 par.
+                                                                           2 let. c FADP</b>
+                                                                           <br>
+                                                                           - communication, with the guarantees
+                                                                           provided for in <b>art. 6 FADP</b>
+                                                                           <br>
+                                                                           - the optional nature of participation in
+                                                                           the project and the possibility of revoking
+                                                                           consent at any time <b>art. 8 FADP,
+                                                                           art. 1-2 OFADP</b>
+                                                                           <br>
+                                                                           - the consequences if the person concerned
+                                                                           refuses to participate (in principle, no
+                                                                           inconvenience should result) <b>art. 4
+                                                                           par. 2 FADP</b>
+                                                                           <br>
+                                                                           - the right of access and rectification
+                                                                           <b>art. 8 FADP art. 1 OFADP</b>">
+                                                                            <span class="speech-bubble"
+                                                                                  onmouseover="highlight_sentence(this)"
+                                                                                  onmouseout="remove_highlight(this)">
+                                                                            For all requests, please contact us:
+                                                                            <a href="mailto: diabetespredictor@gmail.com">
+                                                                                diabetespredictor@gmail.com
+                                                                            </a>
+                                                                            </span>
+                                                                        </p>
+                                                                        <p class="txt">
+                                                                            We provide you the possibility to delete your
+                                                                            account and assessments by yourself as well by
+                                                                            going to your Profile page.
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" id="headingThree">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                            Modifications
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#privacy_policy_collapse">
+                                    <div class="card-body">
+                                        <p class="txt"
+                                           data-toggle="popover"
+                                           title="Consequences of non-compliance"
+                                           data-html="true"
+                                           data-content="<p>Finally, the consequences of non-compliance with the
+                                           above-mentioned standards for the moment are:</p>
+                                           <p>UDP may be punished upon complaint with a fine if we do not comply
+                                           with the obligations set forth in <b>Art. 8 to 10 and 14 FADP</b>,
+                                           by intentionally providing inaccurate or incomplete information.
+                                           <b>Art. 34 par.1 let. a FADP</b> or if we intentionally fail to
+                                           inform the person concerned in accordance with <b>art. 14 par. 1
+                                           FADP</b> or if we do not provide the information required by <b>Art.
+                                           14 par. 2 FADP</b> and by <b>art. 34 par.1 let. b FADP</b>. The other
+                                           sanctions do not apply to us. We have tried not to be punishable,
+                                           however, as repeatedly written on our site, we have made sure to make
+                                           it clear that we are students working on this project to the best of
+                                           our ability and decline all responsibility.</p>">
+                                            <span class="speech-bubble"
+                                                  onmouseover="highlight_sentence(this)"
+                                                  onmouseout="remove_highlight(this)">
+                                            UDP reserves the right to change its Privacy Policy at any time and
+                                            without prior notice. The current version is the one published on
+                                            our website. In case of an update of the Privacy Policy and if you have
+                                            provided us with your email address, we will inform you of the change
+                                            by e-mail.
+                                            </span>
+                                        </p>
+                                        <p class="txt"
+                                           data-toggle="popover"
+                                           title="General information"
+                                           data-html="true"
+                                           data-content="<p>Tougher penalties and increased powers of the
+                                           <b>FDPIC</b> (<b>Federal Data Protection and Information
+                                           Commissioner</b>). The revised <b>FDPIC</b> introduces criminal sanctions
+                                           in the form of a fine of up to 250,000 .- CHF. In addition, the
+                                           <b>FDPIC</b> may initiate an administrative investigation and issue
+                                           orders. The cantonal criminal prosecution authorities will be responsible
+                                           for the enforcement of criminal sanctions. In addition, civil actions
+                                           for revocation, injunction or damages remain possible.
+                                           <a id='pp' href='#ref4'><sup>[4]</sup></a> The total revision of the
+                                           <b>FADP</b> should come into force in 2022.</p>
+                                           <p>In a nutshell some of the new obligations of the data controller under
+                                           the revised <b>FADP</b> would be:</p>
+                                           <p>Right to data portability: This enable the data subject to demand
+                                           that his or her data would be transferred to other providers. This right
+                                           will nevertheless be subject to some clear criteria and reserved to the
+                                           information that lends itself to the portability. That would not concern
+                                           us since it would not be proportional to ask us to provide such
+                                           possibilities due to the frame of our project, it is more reserved
+                                           for the data stored on a common electronic format (conversations from
+                                           Whatsapp to Signal for instance).<a id='pp' href='#ref9'><sup>[9]</sup></a></p>
+                                           <p>Notification of data breaches: In case of data loss that could lead
+                                           to a high risk of personal data loss, for example.
+                                           <a id='pp' href='#ref4'><sup>[4]</sup></a> Data protection impact assessments:
+                                           The controller must establish the consequences of processing sensitive
+                                           data.<a id='pp' href='#ref4'><sup>[4]</sup></a> Privacy-by-design and
+                                           privacy-by-default: technical and organizational measures (art. 8
+                                           <b>FADP</b>) must be taken from the very beginning of the project
+                                           with a focus on data minimization.<a id='pp' href='#ref9'><sup>9</sup></a></p>">
+                                            <span class="speech-bubble"
+                                                  onmouseover="highlight_sentence(this)"
+                                                  onmouseout="remove_highlight(this)">
+                                            Legal basis: This web application is based on the provisions of the
+                                            Swiss Federal Act on Data Protection of 19 June 1992 Status as of
+                                            1 March 2019.
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" id="headingFour_References">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseFour_References" aria-expanded="false" aria-controls="collapseFour_References">
+                                            References
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapseFour_References" class="collapse" aria-labelledby="headingTwo" data-parent="#terms_and_conditions_collapse">
+                                    <div class="card-body">
+                                        <p class="txt">
+                                            <sup>1</sup><a id="ref1" href="https://www.bj.admin.ch/bj/de/home/staat/gesetzgebung/datenschutzstaerkung.html"><span class="references">https://www.bj.admin.ch/bj/de/home/staat/gesetzgebung/datenschutzstaerkung.html</span></a>
+                                            <br>
+                                            <sup>2</sup><a id="ref2" href="https://www.mll-news.com/wp-content/uploads/2020/12/Overview_Swiss_FADP_GDPR_English_Final_181220.pdf "><span class="references">https://www.mll-news.com/wp-content/uploads/2020/12/Overview_Swiss_FADP_GDPR_English_Final_181220.pdf</span></a>
+                                            <br>
+
+                                            <sup>3</sup><a id="ref3"><span class="references">Nouvelle loi fédérale sur la protection des données : le point de vue du PFPDT (revDSG_FR_final.pdf).</span></a>
+                                            <br>
+                                            <sup>4</sup><a id="ref4" href="https://www.mll-news.com/new-swiss-data-protection-law-an-overview-of-the-most-important-revisions-of-the-swiss-federal-act-on-data-protection/"><span class="references">https://www.mll-news.com/new-swiss-data-protection-law-an-overview-of-the-most-important-revisions-of-the-swiss-federal-act-on-data-protection/</span></a>
+                                            <br>
+                                            <sup>5</sup><a id="ref5" href="https://swissprivacy.law/26/"><span class="references">https://swissprivacy.law/26/</span></a>
+                                            <br>
+                                            <sup>6</sup><a id="ref6"><span class="references">The following are now considered personal data: e-mail addresses, cookies, browsing history, IP addresses, (Unpublished decision 1C_285/2009).</span></a>
+                                            <br>
+                                            <sup>7</sup><a id="ref7"><span class="references">FANTI Sebastien, Big Data & Protection des données dans le domaine de la santé, p. 75.</span></a>
+                                            <br>
+                                            <sup>8</sup><a id="ref8"><span class="references">Health data, which is part of the private sphere, has been mentioned separately in the mentioned separately in the FADP because of its importance. ATF 130 III 33.</span></a>
+                                            <br>
+                                            <sup>9</sup><a id="ref9" href="https://www.kellerhals-carrard.ch/fr/newsroom/2020/10/KuB_04_2020_F.php#:~:text=Vue%20d'ensemble,final%20du%2025%20septembre%202020"><span class="references">https://www.kellerhals-carrard.ch/fr/newsroom/2020/10/KuB_04_2020_F.php#:~:text=Vue%20d'ensemble,final%20du%2025%20septembre%202020</span></a>
+
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tc" role="tabpanel" aria-labelledby="tc-tab">
+                <div class="row justify-content-center">
+                    <div class="col-10">
+                        <p class="txt"
+                           data-toggle="popover"
+                           title="General Terms and Conditions (GTC)"
+                           data-html="true"
+                           data-content="<p>Especially on the internet, when it comes to integrating data protection
+                           into new technologies during their initial creation (privacy by design), references to
+                           the General Terms and Conditions (GTC) must be express and unmistakable. In principle, the GTC
+                           should be easily accessible on the webpage, so that they can be printed without any
+                           problems. It is particularly important that the GTC are concise, clear and easy to
+                           understand on the Internet. It is inconvenient to have to flip through and compare clauses
+                           on the screen.<a id='TaC' href='#t_and_c_ref1'><sup>[1]</sup></a> The font size should be chosen
+                           so that it can be read with the naked eye. The loading time of the GTC should be as short
+                           as possible but also containing all the relevant information. In order to preserve the
+                           means of proof for sales contracts in particular, clients are advised to always print
+                           out or at least save the GTC with the date, as the online supplier can change them at
+                           any time. Since the general conditions of use are not mandatory but an optional document
+                           that can be submitted to the user of a service to regulate its use. It is a contractual
+                           document but as opposed to a negotiated contract, the user does not have the possibility
+                           to negotiate, he or she must choose between either to accept the terms of use and thus he
+                           or she can use the website or to refuse and leave the website.
+                           <a id='TaC' href='#t_and_c_ref2'><sup>[2]</sup></a></p>
+                           <p>This is a first filter that allows us to make sure that the user has been sufficiently
+                           informed of our process when entering the site.</p>">
+                            <span class="speech-bubble"
+                                  onmouseover="highlight_sentence(this)"
+                                  onmouseout="remove_highlight(this)">
+                            The purpose of these General Terms and Conditions (GTC) is to define the rules that apply when consulting the diabetespredictor.ch website.
+                            Browsing and using our website implies full and complete acceptance of these GTC.
+                            Therefore, by continuing to browse, the visitor acknowledges that he/she accepts and adheres to the present GTC.
+                            UDP reserves the right to modify the GTC at any time. Nevertheless, the current version of the GTU is the one online at the time of consultation and use of the website.
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-9">
+                        <div class="accordion" id="terms_and_conditions_collapse">
+                            <div class="card">
+                                <div class="card-header" id="headingOne_terms_and_conditions">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne_terms_and_conditions" aria-expanded="true" aria-controls="collapseOne_terms_and_conditions">
+                                            Who we are
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapseOne_terms_and_conditions" class="collapse" aria-labelledby="headingOne" data-parent="#terms_and_conditions_collapse">
+                                    <div class="card-body" >
+                                        <p class="txt">
+                                            UDP is a university project of the University of Zurich in the framework of the AI - FS 21 course,
+                                            gathering 5 students from different faculties.
+                                            This project aims to explore the different interactions between artificial intelligence and law through this website,
+                                            and at the same time to bring some educational information on the issue of diabetes.
+                                            You can find more information on the "Our Approach" tab.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" id="headingTwo_terms_and_conditions">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo_terms_and_conditions" aria-expanded="false" aria-controls="collapseTwo_terms_and_conditions">
+                                            Disclaimer
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapseTwo_terms_and_conditions" class="collapse" aria-labelledby="headingTwo" data-parent="#terms_and_conditions_collapse">
+                                    <div class="card-body">
+                                        <p class="txt"
+                                           data-toggle="popover"
+                                           title="Disclaimer"
+                                           data-html="true"
+                                           data-content="<p>UDP offers a test that calculates the diabetes risk, however we
+                                           require to accept the terms and conditions, by a release of responsibility to clear ourselves of
+                                           some misunderstandings that could arise as a result of the value of the
+                                           information on our site. This therefore protects us from possible legal
+                                           claims that someone could have against UDP. Even if the Swiss liability
+                                           law is not as strict as e.g. the one of the United States, and the nature of this
+                                           project in the frame of a University class, we wanted to protect ourselves
+                                           as much as possible, given the medical nature that could potentially lead
+                                           to confusion. The disclaimer and the limitation of liability are here for
+                                           this reason.</p>
+                                           <p>In fact, we have made every effort to make a serious and professional
+                                           work that inspires confidence, nevertheless we must remind the user of
+                                           the purpose of this academic project which is not a medical research at
+                                           all. For such a disclaimer to be valid, it must be accepted by the user.
+                                           By accepting the privacy policy the user does so and this is done
+                                           of his or her own free will since the test is optional and a large margin
+                                           of choice is offered to the user. In addition to this, we have decided to put a
+                                           reminder in bold, bright red, above our risk predictor in the assessment tab to make sure
+                                           that the message gets through to the user. The disclaimer also requires
+                                           the informed consent of the user.</p>
+                                           <p>Finally, the consent must not lead to an excessive commitment
+                                           <b>art. 27 of the Swiss Civil Code 210</b>.
+                                           <a id='TaC' href='#t_and_c_ref3'><sup>[3]</sup></a> While the disclaimer is more
+                                           concerned with the medical side and is limited to specifying the
+                                           informative and educational nature of the project, the limitation of
+                                           liability is more limited to the web page itself and the consequences
+                                           related to the internet format of the artifact.">
+                                            <span class="speech-bubble"
+                                                  onmouseover="highlight_sentence(this)"
+                                                  onmouseout="remove_highlight(this)">
+                                            All the Services proposed on UDP constitute an academic work for
+                                            the UZH, in the framework of the interdisciplinary course AI FS 21. The
+                                            sole purpose of this work is to illustrate the complementarity of law
+                                            and artificial intelligence through this website. We are not doctors and
+                                            none of the information can be understood as medical advice. In spite of
+                                            all the attention paid to the realization of our project, the test
+                                            carried out or the reception of the newsletter does not constitute in
+                                            any case a follow-up or a medical consultation and does not aim at
+                                            replacing it. The test performed does not replace a consultation with
+                                            a doctor. It is strongly recommended to consult a doctor or a
+                                            professionally competent and qualified specialist on the spot
+                                            if necessary. All information provided through this site, such as
+                                            text, treatment suggestions or hypotheses, suggestions, results,
+                                            charts, graphs, images, advice, communications and all other materials
+                                            provided are for informational and educational purposes only and are not
+                                            a substitute for professional medical advice or treatment. Always seek
+                                            the advice of your doctor or other qualified health care provider on
+                                            any matter relating to your health. Never neglect or delay seeking
+                                            professional medical advice based on information obtained through the
+                                            service. If you think you have a medical emergency or need treatment,
+                                            call your doctor or local emergency room immediately. UDP does not
+                                            recommend or endorse any specific test, product, procedure, advice or
+                                            other information that may be mentioned on the website. Your reliance
+                                            on information provided by UDP or any member of the support team is at
+                                            your own risk, although we always ensure that our services are provided
+                                            with limited but reasonable skill and in accordance with your rights
+                                            as a user.
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" id="headingThree_terms_and_conditions">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree_terms_and_conditions" aria-expanded="false" aria-controls="collapseThree_terms_and_conditions">
+                                            Scope of Application
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapseThree_terms_and_conditions" class="collapse" aria-labelledby="headingTwo" data-parent="#terms_and_conditions_collapse">
+                                    <div class="card-body">
+                                        <p class="txt">
+                                            This is a Swiss website intended for individuals resident in Switzerland,
+                                            by entering this site you agree to be bound by the following privacy policy
+                                            and the Swiss law.
+                                        </p>
+                                        <p class="txt">
+                                            The privacy policy applies only to the website of UDP under the
+                                            domain "diabetespredictor.ch".
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" id="headingFour_terms_and_conditions">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseFour_terms_and_conditions" aria-expanded="false" aria-controls="collapseFour_terms_and_conditions">
+                                            Use of your data
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapseFour_terms_and_conditions" class="collapse" aria-labelledby="headingTwo" data-parent="#terms_and_conditions_collapse">
+                                    <div class="card-body">
+                                        <p class="txt">
+                                            Data protection is very important to us. Therefore, we strictly observe
+                                            the legal requirements of the Federal Data Protection Act and the Federal
+                                            Act on Human Research when collecting, processing and using your
+                                            personal data.
+                                        </p>
+                                        <p class="txt">
+                                            We do not collect, store or process any of your data without your prior
+                                            consent and only after informing you in an informed manner about what
+                                            happens to your data (see privacy policy).
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" id="headingFive_terms_and_conditions">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseFive_terms_and_conditions" aria-expanded="false" aria-controls="collapseFive_terms_and_conditions">
+                                            Disclosure of personal data
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapseFive_terms_and_conditions" class="collapse" aria-labelledby="headingTwo" data-parent="#terms_and_conditions_collapse">
+                                    <div class="card-body">
+                                        <p class="txt">
+                                            Under no circumstances will we pass on your personal data to third parties without your consent.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" id="headingSix_terms_and_conditions">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseSix_terms_and_conditions" aria-expanded="false" aria-controls="collapseSix_terms_and_conditions">
+                                            Limitation of liability
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapseSix_terms_and_conditions" class="collapse" aria-labelledby="headingTwo" data-parent="#terms_and_conditions_collapse">
+                                    <div class="card-body">
+                                        <p class="txt"
+                                           data-toggle="popover"
+                                           title="Limitation of Liability"
+                                           data-html="true"
+                                           data-content="<p>From a legal point of view, the expression 'limitation of
+                                           availability' appears under <i>'exclusive agreement of liability'</i> in
+                                           <b>art. 100 of the Swiss Civil Code of Obligations SR 220</b> (<b>CO</b>),
+                                           in the limits of the <i>'scope of compensation'</i> <b>art. 99 CO</b>. In
+                                           addition to the <b>art. 100 CO</b>, the expression has a more general scope
+                                           in everyday language. It means that, in one way or
+                                           another, the beneficiary of the exclusion intends not to assume any
+                                           responsibility towards the other party for a particular situation. The
+                                           clause is thus intended to modify the legal situation that would result,
+                                           without its adoption in the agreement, from the commitments assumed and
+                                           or the applicable legal rules. The clause removes, from the party who accepts it, the advantages which without it,
+                                           the party would be protected to a certain extend by the law.
+                                           <a id='TaC' href='#t_and_c_ref4'><sup>[4]</sup></a></p>">
+                                            <span class="speech-bubble"12
+                                                  onmouseover="highlight_sentence(this)"
+                                                  onmouseout="remove_highlight(this)">
+                                            Although great care has been taken to ensure the accuracy of the information provided on this site, UDP cannot accept any liability for the accuracy, correctness, up-to-dateness, reliability or completeness of this information. <br>
+                                            <br>
+					UDP expressly reserve the right to modify or delete the content of this site in whole or in part, or to temporarily suspend its publication, at any time and without prior notice.<br>
+                                        <br>   
+					 UDP will not be held liable for any material or immaterial damage that may be caused by access to or use or non-use of the information provided, by misuse of the connection or by technical problems.<br>
+                                        <br>    
+					Concerning the links, references, platforms or other services or externals websites are not the responsibility of UDP. Access to and use of these sites is at the user's own risk. UDP expressly declare that they have no influence whatsoever on the design, content and offerings of the linked sites. The information and services offered by these sites are entirely the responsibility of their authors.
+                                            UDP accept no responsibility for such websites.
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" id="headingSeven_terms_and_conditions">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseSeven_terms_and_conditions" aria-expanded="false" aria-controls="collapseSeven_terms_and_conditions">
+                                            Contact
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapseSeven_terms_and_conditions" class="collapse" aria-labelledby="headingTwo" data-parent="#terms_and_conditions_collapse">
+                                    <div class="card-body">
+                                        If you have any question concerning our general terms and conditions, our
+                                        privacy policy or any other question, you can contact us at the following
+                                        address: <a href="mailto: diabetespredictor@gmail.com">diabetespredictor@gmail.com</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" id="headingEight_References">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseEight_References" aria-expanded="false" aria-controls="collapseEight_References">
+                                            References
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapseEight_References" class="collapse" aria-labelledby="headingTwo" data-parent="#terms_and_conditions_collapse">
+                                    <div class="card-body">
+                                        <p class="txt">
+                                            <sup>1</sup><a id="t_and_c_ref1"><span class="references">HERTIG PEA Agnes, la protection des données médicales est-elle efficace ? Basel 2003.</span></a>
+                                            <br>
+                                            <sup>2</sup><a id="t_and_c_ref2"><span class="references">SMITH Graham J. H.,Internet Law and Regulation, p. 821.</span></a>
+                                            <br>
+                                            <sup>3</sup><a id="t_and_c_ref3" href="https://www.unil.ch/cedidac/files/live/sites/cedidac/files/Bulletins/Bulletin_no_57.pdf"><span class="references">https://www.unil.ch/cedidac/files/live/sites/cedidac/files/Bulletins/Bulletin_no_57.pdf</span></a>
+                                            <br>
+                                            <sup>4</sup><a id="t_and_c_ref4"><span class="references">PETITPIERRE, Gilles. A propos des conventions exclusives de la responsabilité. In: A. Dufour et al. Pacte, convention, contrat, Mélanges en l'honneur du Professeur Bruno Schmidlin. Bâle : Helbing & Lichtenhahn, 1998. p. 347-358.</span></a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="DiabetesInformation" role="tabpanel" aria-labelledby="DiabetesInformation-tab">
+                <div class="row justify-content-center" id="further_information">
+                    <div class="jumbotron container" id="jumbotron"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="{% static 'js/predict.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/information.js' %}"></script>
+
+{% endblock %}

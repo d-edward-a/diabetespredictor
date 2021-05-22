@@ -1,0 +1,287 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block main_content %}
+<div class="container">
+    <div class="row">
+        <div class="col-9 logo">
+            <a href="/index"><img class="logosize" alt="diabetes logo" src="{% static 'images/heart_diabetes.png' %}"></a>
+        </div>
+        <div class="col-3 text-right align-self-center">
+            {% block user_info %}
+            {% if user.is_authenticated %}
+            {% else %}
+            <!-- Start Modal -->
+            <div class="modal fade" id="GDPRModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">GDPR title</h5>
+                        </div>
+                        <div class="modal-body">
+                            GDPR placeholder
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Accept</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Modal -->
+            <a href="{% url 'login' %}" title="Login" class="text-decoration-none h5">
+                <button type="button" class="btn btn-outline-info">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-open" viewBox="0 0 16 16">
+                        <path d="M8.5 10c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z"/>
+                        <path d="M10.828.122A.5.5 0 0 1 11 .5V1h.5A1.5 1.5 0 0 1 13 2.5V15h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V1.5a.5.5 0 0 1 .43-.495l7-1a.5.5 0 0 1 .398.117zM11.5 2H11v13h1V2.5a.5.5 0 0 0-.5-.5zM4 1.934V15h6V1.077l-6 .857z"/>
+                    </svg> Login
+                </button>
+            </a>
+            {% endif %}
+            {% endblock %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-5 offset-md-3 registerbox" aria-label="This is the registration form. Here you can create a new account">
+            <h1>Register</h1>
+            <p>Enter your credentials.</p>
+            <div class="text-danger mb-4 d-none subtitle" id="register-error" role="alert">Please correct the error(s)  </div>
+            <ul class="sr-only" id="register-error-list"></ul>
+            <form method="POST" action="{% url 'register' %}">
+                {% csrf_token %}
+                <label class="form-label">Username</label>
+                <input name="username" class="form-control" type="text" id="register_username_control" placeholder="Username" required aria-required="true">
+                <small class="invalid-feedback"></small>
+                <span class="error_form" id="usernameErrorMessage"></span>
+                <br id="username_break" style="display: none">
+
+                <label class="form-label" style="margin-top: 5px">Email</label>
+                <input name="email" class="form-control" id="register_email_control" type="email" placeholder="Email" required aria-required="true">
+                <small class="invalid-feedback"></small>
+                <span class="error_form" id="EmailErrorMessage"></span>
+                <br id="email_break" style="display: none">
+
+                <div class="form-group" style="margin-top: 5px">
+                    <label class="form-label">Password
+                        <!--                        <button type="button" class="btn btn-secondary" >-->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16" id="password_tooltip" data-toggle="tooltip" data-placement="right" data-html="true" title="- between 8 to 15 digits<br>- at least one uppercase letter<br>- at least one lowercase letter<br>- at least one numeric digit<br>- at least one special character">
+                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                        </svg>
+                        <!--                        </button>-->
+                    </label>
+                    <input name="password" class="form-control" id="register_password_control" type="password" placeholder="Password" required aria-required="true">
+                    <small class="invalid-feedback"></small>
+                    <span class="error_form" id="passwordErrorMessage"></span>
+                    <br id="password_break" style="display: none">
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-1">
+                            <input type="checkbox" name="news_signup" class="form" placeholder="Newsletter" >
+                        </div>
+                        <div class="col-11">
+                            <label class="form-label">I want to be updated by a newsletter. The newsletter consists of regular, but rare emails to remind you to redo a test with our risk predictor. </label>
+                            <input type="hidden" value="off" name="news_signup" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-1">
+                            <input type="checkbox" id="accept_tc" name="accept_tc" onclick="accept_tc_check()" class="form">
+                        </div>
+                        <div class="col-11" style="text-align: justify">
+                            <label class="form-label">
+                                By checking this box, you agree to have carefully read and understood our
+                                <a href="javascript: show_privacy_policy();">Privacy Policy</a>
+                                which is in accordance with the Swiss Federal Data Protection Act.
+                            </label>
+                            <input type="hidden" value="off" name="accept_tc" />
+                        </div>
+                    </div>
+                </div>
+                <!--                Modal for Data Privacy Policy-->
+                <div class="modal fade" id="privacyPolicy" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="privacyPolicyLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="privacyPolicyLabel">Privacy Policy</h5>
+                            </div>
+                            <div class="modal-body">
+                                <h5>Who we are and how to reach us</h5>
+                                UDP is a project of students from the University of Zurich for the FS21 Artificial Intelligence: Technology and Law course.
+                                The project aims to explore the different interactions between artificial intelligence
+                                and law through a web application and, at the same time, bring some educational information on the issue of diabetes.
+                                You can find more information in the "Our Approach" tab.
+                                <br>
+                                Should you have any questions regarding our privacy policy or the web application in general, feel free to
+                                <a href="mailto: diabetespredictor@gmail.com">send us an email</a>.
+                                <br>
+                                <br>
+                                <h5>About the data we are collecting</h5>
+                                We only collect data necessary to offer you the most accurate risk prediction our algorithm can.
+                                We already use a set of data that allows us to provide you an anonymous version of the web application aiming for the most user-friendly approach.
+                                <br>
+                                Data will only be collected or stored depending on how you choose to interact with the web application.
+                                <br>
+                                <br>
+                                <h5>Unregistered user</h5>
+                                You do not have to create an account to use the diabetes assessment feature of the web application.
+                                If you explore the web application and decide only to take the assessment without registering, UDP will not collect any personal data.
+                                In that way, you can do the assessment and explore the website entirely anonymously.
+                                <br>
+                                <br>
+                                <h5>Registered user</h5>
+                                When creating an account, you are only required to enter
+                                your username, email address, and password. During
+                                assessment, you will have an option to just check the
+                                result or save your assessment details and result. Saving
+                                an assessment means that the information you entered in
+                                "Personal Details", "Vitals", "Education", and
+                                "Consumption" and the "Prediction" and "Confidence Score"
+                                from the result will be saved in your account. You will be
+                                able to view your saved assessments and will have the
+                                liberty do delete it. The same applies to your user account, you
+                                will be able to delete it if you do not want your details
+                                to be affiliated with the web application anymore.
+                                <br>
+                                Please note that you are the only person responsible for
+                                maintaining the confidentiality of your password and login
+                                and are fully responsible for all activities that occur
+                                under your password or account, whether or not caused by
+                                your knowledge (unless such activities are caused by our
+                                acts or omissions).
+                                <br>
+                                If you knowingly provide your login
+                                information and password to any other person, your rights
+                                to use and access the Service may be temporarily suspended
+                                or terminated.
+                                <br>
+                                If you notice that your account is breached or there is an
+                                unauthorized activity in your account, you should
+                                <a href="mailto: diabetespredictor@gmail.com">send us an
+                                    email</a> immediately so we can take appropriate actions.
+                                <br>
+                                We also provide you a feature where you can reset your
+                                password in case you forget your current password.
+                                This feature will require you to use the email address
+                                you provided during registration.
+                                <br>
+                                Lastly, during registration, you can subscribe or not to
+                                our newsletter. Our newsletters will include informing
+                                users about our new assessment feature and reminding users
+                                about when their last assessment was. If you opt to not
+                                receive newsletters, you should not subscribe upon
+                                registration. You can still change your subscription
+                                after registration by going to your Profile page.
+                                <br>
+                                <br>
+                                <h6>How we collect data</h6>
+                                Your data, your choice.
+                                Since you have the choice, the only way we
+                                can collect your personal data is if you
+                                disclose it to us of your own free will
+                                as you are informed on the data we
+                                collect (refer to "What are we collecting? For what purpose?").
+                                <br>
+                                We do not collect any information about
+                                your username and password, we just make
+                                sure that they are stored correctly.
+                                <br>
+                                We remind you that if you do not want your
+                                data to be collected you can use the
+                                website without logging in. When logged
+                                in, you still have the option to delete
+                                your risk results in your results history
+                                tab.
+                                <br>
+                                <br>
+                                <h6>What we are collecting and for what purpose</h6>
+                                UDP only collects personal data that is
+                                absolutely necessary for the performance
+                                of its tasks. Username is collected and
+                                password is set in order for registered
+                                users to access their account. Email
+                                addresses are collected so that users will
+                                have the capability to reset their password
+                                in case it is forgotten and also, for us to
+                                be able to send newsletters when the
+                                user is subscribed. Additionally we save the data you provide us
+                                for the prediction, in order to see your history. The data we save for the predictions are
+                                age, gender, educational level, diabetes status, heart disease, blood pressure, smoking,
+                                diabetes education, diabetes knowledge, fruit and vegetable consumption per week,
+                                sweet beverages consumption per week and physical exercise per week.
+                                <br>
+                                <br>
+                                <h6>Where your data is stored and who has access to it</h6>
+                                In view of the sensitivity of the data, regarding the security mentioned in <b>art. 7 FADP</b>, the data must be protected against unauthorized processing by appropriate organizational and technical measures. This means, that the data must be kept in a secure place, the electronic data must be encrypted, access to the data must be restricted to a limited and defined number of people, the data must be treated confidentially (specified by <b>art. 8 to 12</b> of the <b>Ordinance to the Federal Act on Data Protection 235.11</b> (<b>OFADP</b>)
+                                The right of access to the user's personal information is guaranteed in the privacy policy. Thus, if the user wishes to know, in spite of the full transparency that we show, all that we have in our possession concerning him, we as controller will provide him with the information in accordance with <b>art. 8 FADP</b>.
+                                All our data are stored in Switzerland at <a href="https://www.infomaniak.com/en">Infomaniak</a>, a professional web hosting provider. Infomaniak is approved and benefits from the certifications ISO 14001, ISO 50001 and ISO 27001 in accordance with <b>art. 11 FADP</b>. The server where we store the data guarantees the protection of the data through adequate technical and organizational measures <b>art. 8 and 9 OFADP</b>.
+                                <br>
+                                <br>
+                                <h6>For how long the data is stored</h6>
+                                Your personal information will be kept for as
+                                long as it is needed to send you the necessary
+                                information in the newsletters provided for
+                                this purpose. However, due to the nature of
+                                this project, we reserve the right to modify
+                                or delete the site at any time. When the site
+                                will be deleted, all data related to your
+                                account will be deleted as well. You will be
+                                notified 7 days prior to the deletion of the web
+                                application. After 7 days from notification,
+                                all data will be deleted and unrecoverable.
+                                <br>
+                                <br>
+                                <h6>Security</h6>
+                                We are aware of the sensitivity of the data we
+                                collect and the security of your data is
+                                important to us. UDP has taken the necessary
+                                measures to ensure an adequate level of
+                                security to secure your personal data.
+                                <br>
+                                In this way, we make sure that they are
+                                not lost, accessed, disclosed, modified nor
+                                used without the authorization that
+                                only we have. The only persons authorized to
+                                process your personal data are the UDP and
+                                for the sole purpose mentioned in "What are we collecting? For what purpose?", and for a limited time
+                                mentioned in "For how long are we storing the data?".
+                                <br>
+                                <br>
+                                <h6>Your Rights</h6>
+                                You have the right to request any information
+                                concerning your personal data at any time.
+                                You also have the right to request the
+                                correction or deletion of your personal data.
+                                You may also limit or withdraw your consent
+                                to the processing of your personal data by
+                                us at any time.  <br>
+
+                                For all requests, please contact us:
+                                <a href="mailto: diabetespredictor@gmail.com">
+                                    diabetespredictor@gmail.com</a> <br>
+
+                                We provide you the possibility to delete your
+                                account and assessments by yourself as well by
+                                going to your Profile page.
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--                Modal for Data Privacy Policy-->
+                <div><span class="error_form" id="not_good" style="color: red"></span></div>
+                <button class="btn btn-info" id="register-button" type="submit" disabled>Register</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script type="text/javascript" src="{% static 'js/user_details.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/validate_registration.js' %}"></script>
+{% endblock %}

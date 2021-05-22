@@ -1,0 +1,14 @@
+{% load example %}
+{{ wizard.management_form }}
+
+{% for field in wizard.form %}
+<label class="form-label">{{ field.label }}</label>
+{% csrf_token %}
+{{field | add_classes:'form-control mb-2 account-form'}}
+{% endfor %}
+<div>
+    <span class="error_form">{{form.non_field_errors | striptags}}</span>
+    <br>
+    <a href="/reset_password">Forgot password?</a>
+</div>
+<br>
